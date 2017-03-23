@@ -36,7 +36,7 @@ class IndeedSpider(CrawlSpider):
         print('\n Crawling  %s\n' % response.url)
         hxs = Selector(response)
         sites = hxs.select("//div[@class='  row  result'] | //div[@class='row  result'] | //div[@class='lastRow  row  result'] | //div[@class='row sjlast result']")
-        print len(sites)
+        print (len(sites))
         items = []
 #--------------------------------------------------------------------------------------------#
         for site in sites:
@@ -79,13 +79,13 @@ class IndeedSpider(CrawlSpider):
             # #item['source_url'] = self.get_source(link_url)
             #yield item
             print("-------------------------------")
-            if(item['source'] == 'Indeed'):
-                print("hit")
-                #print(item['link_url'])
-                request = Request("http://www.indeed.co.in" + item['link_url'], callback=self.parse_next_site)
-            request.meta['item'] = item
-            yield request
-            #items.append(item)
+            # if(item['source'] == 'Indeed'):
+            #     print("hit")
+            #     #print(item['link_url'])
+            #     request = Request("http://www.indeed.co.in" + item['link_url'], callback=self.parse_next_site)
+            # request.meta['item'] = item
+            yield item
+                        #items.append(item)
             
         
 
