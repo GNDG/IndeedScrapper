@@ -22,4 +22,6 @@ class IndeedItem(Item):
     salary = Field()
     detailed_summary = Field()
     summary_url = Field()
+    sponsored = Field()
+    job_key = Field()
     pass

@@ -5,7 +5,7 @@ http://scrapy.org/
 Requires
 ---------------
 scrapy
-mysql-python
+pymongo
 
 
 Usage

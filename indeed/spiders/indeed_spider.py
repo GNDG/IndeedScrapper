@@ -12,10 +12,10 @@ from indeed.items import IndeedItem
 class IndeedSpider(CrawlSpider):
     name = "indeed"
     allowed_domains = ["indeed.co.in"]
+    temp_url = ['https://www.indeed.co.in/jobs?q=&l=Delhi&start=%s' % page for page in xrange(10,1000,10)]
+    temp_url1 = ["http://www.indeed.co.in/jobs?l=Delhi"]
     start_time = time.time()
-    start_urls = [
-        "http://www.indeed.co.in/jobs?l=Delhi"
-    ]
+    start_urls = temp_url1 + temp_url
 
     rules = ( 
         Rule(LxmlLinkExtractor(allow=('/jobs.q=&l=Delhi&sort=date$','q=&l=Delhi&sort=date&start=[0-9]+$',),deny=('/my/mysearches', '/preferences', '/advanced_search','/my/myjobs')), callback='parse_item', follow=True),
