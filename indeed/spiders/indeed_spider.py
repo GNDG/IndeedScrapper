@@ -37,7 +37,7 @@ class IndeedSpider(CrawlSpider):
         print('\n Crawling  %s\n' % response.url)
         hxs = Selector(response)
         sites = hxs.select("//div[@class='  row  result'] | //div[@class='row  result'] | //div[@class='lastRow  row  result'] | //div[@class='row sjlast result']")
-        print len(sites)
+        print (len(sites))
         items = []
 #--------------------------------------------------------------------------------------------#
         for site in sites:

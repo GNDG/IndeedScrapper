@@ -10,20 +10,24 @@ BOT_VERSION = '0.1'
 
 SPIDER_MODULES = ['indeed.spiders']
 NEWSPIDER_MODULE = 'indeed.spiders'
-DEFAULT_ITEM_CLASS = 'indeed.items.IndeedItem'
+EFAULT_ITEM_CLASS = 'indeed.items.IndeedItem'
 USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
-DOWNLOAD_DELAY = 2.0
+#DOWNLOAD_DELAY = 2.0
+MONGODB_URL = "localhost:27017"
+MONGODB_DB = "indeed"
+MONGODB_COLLECTION = "test"
+
 ITEM_PIPELINES = {
-	'indeed.pipelines.IndeedPipeline': 300,
-	# 'indeed.pipelines.MysqlInsert': 800,
+#	'indeed.pipelines.IndeedPipeline': 300,
+#    'indeed.pipelines.MysqlInsert': 800,
+	'indeed.pipelines.MongoDBPipeline' :27017,
 	}
 
-DOWNLOADER_MIDDLEWARES = {
-'scrapy.contrib.downloadermiddleware.redirect.RedirectMiddleware' : 543,
-}
+#DOWNLOADER_MIDDLEWARES = {
+#'scrapy.contrib.downloadermiddleware.redirect.RedirectMiddleware' : 543,
+#}
 
-MYSQL = {'user':'root',
-	'host' :'localhost',
-	'passwd':'root',
-	'dbname':'scrapy'}
-
+#MYSQL = {'user':'root',
+#	'host' :'localhost',
+#	'passwd':'root',
+#	'dbname':'scrapy'}

@@ -3,56 +3,31 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/topics/item-pipeline.html
 import sys
-import MySQLdb
-from scrapy.utils.python import unicode_to_str
-from scrapy.utils.markup import replace_escape_chars, remove_tags
-from indeed.settings import MYSQL 
+#import MySQLdb
+import pymongo
 
-class IndeedPipeline(object):
+from scrapy.conf import settings
+from scrapy.exceptions import DropItem
+from scrapy import log 
+
+class MongoDBPipeline(object):
+    def __init__(self):
+        connection = pymongo.MongoClient(
+            settings['MONGODB_URL'],
+        )
+        db = connection[settings['MONGODB_DB']]
+        self.collection = db[settings['MONGODB_COLLECTION']]
+
     def process_item(self, item, spider):
-	
-	i = item['summary'][0]
-	i = remove_tags(i)
-	i = replace_escape_chars(i)
-	item['summary'][0] = i
-
-	i = item['job_title'][0]
-	i = remove_tags(i)
-	i = replace_escape_chars(i)
-	item['job_title'][0] = i
-
-	i = item['company'][0]
-	i = remove_tags(i)
-	i = replace_escape_chars(i)
-	item['company'][0] = i.strip()
-	
+    
+        valid = True
+        for data in item:
+            if not data:
+                valid = False
+                raise DropItem("Missing {0}!".format(data))
+        if valid:
+            self.collection.insert(dict(item))
+            log.msg("Question added to MongoDB database!",
+                    level=log.DEBUG, spider=spider)
         return item
 
-class MysqlInsert(object):
-    def __init__(self):
-		db=MySQLdb.connect(user=MYSQL['user'], passwd=MYSQL['passwd'], db=MYSQL['dbname'], host=MYSQL['host'], charset = "utf8", use_unicode = True)
-		self.c=db.cursor()
-		
-    def process_item(self, item, spider):
-
-	try:
-		self.c.execute('''insert into jobs (job_title, link_url, location, company, summary, source, found_date, source_url, source_page_body, crawl_timestamp, crawl_url) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''', (item['job_title'][0], 
-	item['link_url'][0], 
-	item['location'][0], 
-	item['company'][0],
-	item['summary'][0], 
-	item['source'][0], 
-	item['found_date'][0], 
-	item['source_url'], 
-	item['source_page_body'],
-	item['crawl_timestamp'],
-	item['crawl_url']
-
-))
-	
-
-   	except MySQLdb.Error, e:
-     		print "Error %d: %s" % (e.args[0], e.args[1])
-     		sys.exit (1)
-
-	return item
