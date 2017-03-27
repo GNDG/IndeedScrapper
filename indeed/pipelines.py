@@ -46,7 +46,7 @@ class MongoDBPipeline(object):
                 raise DropItem("Missing {0}!".format(data))
         if valid:
             check=self.collection.find_one({"job_key" : item['job_key']})
-            print(check)
+            #print(check)
             if not check:
                 self.collection.insert(dict(item))
                 log.msg("Question added to MongoDB database!",
