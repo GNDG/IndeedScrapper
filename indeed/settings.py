@@ -15,7 +15,7 @@ USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 #DOWNLOAD_DELAY = 1
 MONGODB_URL = "localhost:27017"
 MONGODB_DB = "indeed"
-MONGODB_COLLECTION = "test2"
+MONGODB_COLLECTION = "test"
 
 ITEM_PIPELINES = {
 	'indeed.pipelines.IndeedPipeline': 300,
