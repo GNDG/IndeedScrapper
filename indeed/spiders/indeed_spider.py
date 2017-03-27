@@ -12,19 +12,19 @@ from indeed.items import IndeedItem
 class IndeedSpider(CrawlSpider):
     name = "indeed"
     allowed_domains = ["indeed.co.in"]
-    temp_url = ['https://www.indeed.co.in/jobs?q=&l=Delhi&start=%s' % page for page in xrange(10,1000,10)]
-    temp_url1 = ["http://www.indeed.co.in/jobs?l=Delhi"]
+    #temp_url = ['https://www.indeed.co.in/jobs?q=&l=Delhi&start=%s' % page for page in xrange(10,20,10)]
+    temp_url1 = ["http://www.indeed.co.in/jobs?q=&l=Delhi"]
     start_time = time.time()
-    start_urls = temp_url1 + temp_url
+    start_urls = temp_url1
 
     rules = ( 
-        Rule(LxmlLinkExtractor(allow=('/jobs.q=&l=Delhi&sort=date$','q=&l=Delhi&sort=date&start=[0-9]+$',),deny=('/my/mysearches', '/preferences', '/advanced_search','/my/myjobs')), callback='parse_item', follow=True),
+        Rule(LxmlLinkExtractor(allow=('/jobs.*'),deny=('/company.*','/viewJob.*','/my/mysearches', '/preferences', '/advanced_search','/my/myjobs'), allow_domains=['indeed.co.in']), callback='parse_item', follow=True),
         )
 
     def parse_next_site(self, response):
         item = response.request.meta['item']
         item['summary_url'] = response.url
-        print('\n Crawling  %s\n' % response.url)
+        #print('\n Crawling  %s\n' % response.url)
         hxs1 = Selector(response)
         item['detailed_summary'] = hxs1.select("//span[@class='summary']").extract()
         item['crawl_timestamp'] =  time.strftime('%Y-%m-%d %H:%M:%S')
@@ -41,7 +41,6 @@ class IndeedSpider(CrawlSpider):
         items = []
 #--------------------------------------------------------------------------------------------#
         for site in sites:
-            print ("test1")
             item = IndeedItem(company='none')
             #print(site.select("descendant::a[@data-tn-element='jobTitle']/@href").extract())
             item['job_title'] = site.select("descendant::a[@data-tn-element='jobTitle']/text()").extract()

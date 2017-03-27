@@ -12,10 +12,10 @@ SPIDER_MODULES = ['indeed.spiders']
 NEWSPIDER_MODULE = 'indeed.spiders'
 EFAULT_ITEM_CLASS = 'indeed.items.IndeedItem'
 USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
-DOWNLOAD_DELAY = 2.0
+#DOWNLOAD_DELAY = 1
 MONGODB_URL = "localhost:27017"
 MONGODB_DB = "indeed"
-MONGODB_COLLECTION = "test"
+MONGODB_COLLECTION = "test2"
 
 ITEM_PIPELINES = {
 	'indeed.pipelines.IndeedPipeline': 300,

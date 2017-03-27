@@ -3,12 +3,31 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/topics/item-pipeline.html
 import sys
-#import MySQLdb
 import pymongo
 
 from scrapy.conf import settings
 from scrapy.exceptions import DropItem
 from scrapy import log 
+
+class IndeedPipeline(object):
+    def process_item(self, item, spider):
+    
+        i = item['summary'][0]
+        # i = remove_tags(i)
+        # i = replace_escape_chars(i)
+        item['summary'][0] = i
+
+        i = item['job_title'][0]
+        # i = remove_tags(i)
+        # i = replace_escape_chars(i)
+        item['job_title'][0] = i
+
+        i = item['company'][0]
+        # i = remove_tags(i)
+        # i = replace_escape_chars(i)
+        item['company'][0] = i.strip()
+        
+        return item
 
 class MongoDBPipeline(object):
     def __init__(self):
